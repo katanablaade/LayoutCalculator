@@ -13,7 +13,7 @@ let service1;
 let service2;
 
 const isNumber = function (num) {
-  return !isNaN(parseFloat(num)) && isFinite(num);
+  return String(parseFloat(num)) === String(num) && isFinite(num);
 };
 
 const asking = function () {
