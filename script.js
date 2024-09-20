@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 let title;
 let screens;
@@ -17,16 +17,16 @@ const isNumber = function (num) {
 };
 
 const asking = function () {
-  title = prompt("Как называется ваш проект?", "Калькулятор верстки");
+  title = prompt('Как называется ваш проект?', 'Калькулятор верстки');
   screens = prompt(
-    "Какие типы экранов нужно разработать?",
-    "Простые, Сложные, Интерактивные"
+    'Какие типы экранов нужно разработать?',
+    'Простые, Сложные, Интерактивные'
   );
   do {
-    screenPrice = prompt("Сколько будет стоить данная работа?");
+    screenPrice = prompt('Сколько будет стоить данная работа?');
   } while (!isNumber(screenPrice));
 
-  adaptive = confirm("Нужен ли адаптив на сайте?");
+  adaptive = confirm('Нужен ли адаптив на сайте?');
 };
 
 const showTypeOf = function (variable) {
@@ -37,12 +37,12 @@ const getAllServicePrices = function () {
   let sum = 0;
   for (let i = 0; i < 2; i++) {
     if (i === 0) {
-      service1 = prompt("Какой дополнительный тип услуги нужен?");
+      service1 = prompt('Какой дополнительный тип услуги нужен?');
     } else if (i === 1) {
-      service2 = prompt("Какой дополнительный тип услуги нужен?");
+      service2 = prompt('Какой дополнительный тип услуги нужен?');
     }
     do {
-      allServicePrices = prompt("Сколько это будет стоить?");
+      allServicePrices = prompt('Сколько это будет стоить?');
     } while (!isNumber(allServicePrices));
 
     sum += +allServicePrices;
@@ -68,13 +68,13 @@ const getServicePercentPrices = function () {
 
 const getRollBackMessage = function (price) {
   if (price >= 30000) {
-    return "Даем скидку в 10%";
+    return 'Даем скидку в 10%';
   } else if (price >= 15000 && price < 30000) {
-    return "Даем скидку 5%";
+    return 'Даем скидку 5%';
   } else if (price >= 0 && price < 15000) {
-    return "Скидка не предусмотрена";
+    return 'Скидка не предусмотрена';
   } else if (price < 0) {
-    return "Что-то пошло не так";
+    return 'Что-то пошло не так';
   }
 };
 
@@ -84,7 +84,7 @@ fullPrice = getFullPrice();
 title = getTitle();
 servicePercentPrice = getServicePercentPrices();
 
-console.log("allServicePrices", allServicePrices);
+console.log('allServicePrices', allServicePrices);
 
 showTypeOf(title);
 showTypeOf(fullPrice);
