@@ -12,6 +12,9 @@ const itemsNumber = document.querySelectorAll('.other-items.number');
 const inputRange = document.querySelector('.rollback input[type="range"]');
 const spanRange = document.querySelector('.rollback span.range-value');
 
+const inputSelect = document.querySelectorAll('.screen input[type = text]');
+const viewsSelect = document.querySelectorAll('.screen select');
+
 const total = document.getElementsByClassName('total-input')[0];
 const totalCount = document.getElementsByClassName('total-input')[1];
 const totalCountOther = document.getElementsByClassName('total-input')[2];
@@ -35,50 +38,26 @@ const appData = {
   countScreens: 0,
 
   checkField: function () {
-    const inputSelect = document.querySelectorAll('.screen input[type = text]');
-    const viewsSelect = document.querySelectorAll('.screen select');
-    let isValid;
+    screenSearch = document.querySelectorAll('.screen');
+    appData.isError = false;
 
-    viewsSelect.forEach((select) => {
-      select.addEventListener('input', function (event) {
-        inputSelect.forEach((index) => {
-          if (index.value === '') {
-            isValid = false;
-          } else {
-            isValid = true;
-          }
-        });
-        if (event.target.value !== '' && isValid) {
-          handlerBtnStart.removeAttribute('disabled');
-        } else {
-          handlerBtnStart.setAttribute('disabled', '');
-        }
-      });
-    });
+    screenSearch.forEach(function (screen) {
+      const select = screen.querySelector('select');
+      const input = screen.querySelector('input');
 
-    inputSelect.forEach((input) => {
-      input.addEventListener('input', function (event) {
-        viewsSelect.forEach((index) => {
-          if (index.value === '') {
-            isValid = false;
-          } else {
-            isValid = true;
-          }
-        });
-        if (event.target.value !== '' && isValid) {
-          handlerBtnStart.removeAttribute('disabled');
-        } else {
-          handlerBtnStart.setAttribute('disabled', '');
-        }
-      });
+      if (select.value === '' || input.value === '') {
+        appData.isError = true;
+      }
     });
+    if (!appData.isError) {
+      appData.start();
+    }
   },
 
   init: function () {
     appData.addTitle();
     appData.checkField();
-    handlerBtnStart.setAttribute('disabled', '');
-    handlerBtnStart.addEventListener('click', appData.start);
+    handlerBtnStart.addEventListener('click', appData.checkField);
     plusBtn.addEventListener('click', appData.addScreenBlock);
     inputRange.addEventListener('input', appData.getRollback);
   },
@@ -88,8 +67,9 @@ const appData = {
     appData.rollback = event.target.value;
 
     if (appData.fullPrice > 0) {
-      appData.servicePercentPrice =
-        appData.fullPrice - appData.fullPrice * (appData.rollback / 100);
+      appData.servicePercentPrice = Math.ceil(
+        appData.fullPrice - appData.fullPrice * (appData.rollback / 100)
+      );
       totalCountRollback.value = appData.servicePercentPrice;
       console.log(appData.servicePercentPrice);
     }
@@ -161,9 +141,8 @@ const appData = {
   },
 
   addScreenBlock: function () {
-    const cloneScreen = screenSearch[0].cloneNode(true);
+    let cloneScreen = screenSearch[0].cloneNode(true);
     screenSearch[screenSearch.length - 1].after(cloneScreen);
-    appData.checkField();
   },
 
   addPrices: function () {
