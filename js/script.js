@@ -21,6 +21,18 @@ const totalCountOther = document.getElementsByClassName('total-input')[2];
 const totalFullCount = document.getElementsByClassName('total-input')[3];
 const totalCountRollback = document.getElementsByClassName('total-input')[4];
 
+const cmsCheckBox = document.querySelector('#cms-open');
+const cmsVariants = document.querySelector('.hidden-cms-variants');
+const otherInput = document.querySelector(
+  '.hidden-cms-variants .main-controls__input'
+);
+const optionOther = document.querySelector(
+  '.hidden-cms-variants #cms-select option[value = other]'
+);
+const optionWordPress = document.querySelector(
+  '.hidden-cms-variants #cms-select option[value = "50"]'
+);
+const cmsSelect = document.querySelector('.hidden-cms-variants #cms-select ');
 let screenSearch = document.querySelectorAll('.screen');
 
 const appData = {
@@ -36,6 +48,7 @@ const appData = {
   servicesPercent: {},
   servicesNumber: {},
   countScreens: 0,
+  wordPress: 1,
 
   checkField: function () {
     screenSearch = document.querySelectorAll('.screen');
@@ -70,6 +83,11 @@ const appData = {
 
     handlerBtnStart.style.display = 'block';
     handlerBtnReset.style.display = 'none';
+    cmsSelect.selectedIndex = 0;
+    cmsCheckBox.checked = false;
+    cmsVariants.style.display = 'none';
+    otherInput.style.display = 'none';
+    this.wordPress = 1;
 
     screenSearch.forEach((item, index) => {
       if (index !== 0) {
@@ -103,6 +121,28 @@ const appData = {
     select.disabled = false;
   },
 
+  cmsOpen: function () {
+    if (cmsCheckBox.checked) {
+      cmsVariants.style.display = 'flex';
+    } else {
+      cmsVariants.style.display = 'none';
+      this.wordPress = 1;
+    }
+  },
+
+  otherOpen: function () {
+    if (optionOther.selected) {
+      otherInput.style.display = 'block';
+      this.wordPress = 1;
+    } else if (optionWordPress.selected) {
+      otherInput.style.display = 'none';
+      this.wordPress = 1.5;
+    } else {
+      otherInput.style.display = 'none';
+      this.wordPress = 1;
+    }
+  },
+
   init: function () {
     appData.addTitle();
     handlerBtnStart.addEventListener('click', () => {
@@ -111,6 +151,8 @@ const appData = {
     handlerBtnReset.addEventListener('click', this.reset.bind(appData));
     plusBtn.addEventListener('click', this.addScreenBlock);
     inputRange.addEventListener('input', this.getRollback.bind(appData));
+    cmsCheckBox.addEventListener('change', this.cmsOpen.bind(appData));
+    cmsVariants.addEventListener('change', this.otherOpen.bind(appData));
   },
 
   getRollback: function (event) {
@@ -121,6 +163,7 @@ const appData = {
       this.servicePercentPrice = Math.ceil(
         this.fullPrice - this.fullPrice * (this.rollback / 100)
       );
+      console.log(appData.wordPress);
       totalCountRollback.value = this.servicePercentPrice;
     }
   },
@@ -211,8 +254,10 @@ const appData = {
         this.screenPrice * (this.servicesPercent[key] / 100);
     }
     this.fullPrice =
-      +this.screenPrice + this.servicePricesPercent + this.servicePricesNumber;
-
+      (+this.screenPrice +
+        this.servicePricesPercent +
+        this.servicePricesNumber) *
+      appData.wordPress;
     this.servicePercentPrice =
       this.fullPrice - this.fullPrice * (this.rollback / 100);
 
