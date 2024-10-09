@@ -254,6 +254,8 @@ const appData = {
     screenSearch = document.querySelectorAll('.screen');
     let cloneScreen = screenSearch[0].cloneNode(true);
     screenSearch[screenSearch.length - 1].after(cloneScreen);
+    const newInput = cloneScreen.querySelector('input[type=text]');
+    newInput.value = '';
   },
 
   addPrices: function () {
