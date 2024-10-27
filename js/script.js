@@ -90,6 +90,7 @@ const appData = {
         const input = item.querySelector('input');
         input.disabled = true;
         select.disabled = true;
+        plusBtn.disabled = true;
       });
 
       this.start();
@@ -146,6 +147,7 @@ const appData = {
     inputRange.value = 0;
     input.disabled = false;
     select.disabled = false;
+    plusBtn.disabled = false;
   },
 
   cmsOpen: function () {
